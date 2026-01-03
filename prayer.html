@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KFGC Prayer Requests</title>
+<script type="module" src="auth-guard.js"></script>
+
+<style>
+body { 
+  font-family: Arial, sans-serif; 
+  background: #f4f7f6; 
+  margin: 0; 
+  padding: 20px; 
+}
+
+h2 { 
+  text-align: center; 
+  color: #08203a; 
+  margin-bottom: 20px;
+}
+
+/* Back button */
+.back-btn {
+  display: inline-block;
+  background-color: #d9a441;
+  color: #08203a;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #f0c961;
+  transform: translateY(-2px);
+}
+
+/* Table styling */
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  background: #fff; 
+  margin-top: 10px; 
+}
+
+th, td { 
+  padding: 10px; 
+  border: 1px solid #ddd; 
+  font-size: 14px; 
+  text-align: left; 
+}
+
+th { 
+  background: #0b3d2e; 
+  color: #fff; 
+}
+
+tr:nth-child(even) { 
+  background: #f2f2f2; 
+}
+  /* Print button */
+.print-btn {
+  background-color: #08203a;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background 0.3s ease;
+}
+
+.print-btn:hover {
+  background-color: #0b3d2e;
+}
+
+/* PRINT STYLES */
+@media print {
+  body {
+    background: #fff;
+    padding: 0;
+  }
+
+  .back-btn,
+  .print-btn {
+    display: none;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    background: #08203a !important;
+    color: #fff !important;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+ /* PRINT HEADER */
+.print-header {
+  display: none;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.print-logo {
+  width: 90px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.print-header h1 {
+  margin: 4px 0;
+  color: #08203a;
+  font-size: 22px;
+}
+
+.print-header p {
+  margin: 2px 0;
+  font-size: 13px;
+}
+
+.print-header .subtitle {
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+/* Show header only when printing */
+@media print {
+  .print-header {
+    display: block;
+  }
+}
+</style>
+</head>
+<body>
+<!-- Print Header (visible only when printing) -->
+<div class="print-header">
+  <img src="kfgc.png" alt="KFGC Logo" class="print-logo">
+
+  <h1>Kirinda Full Gospel Church</h1>
+  <p>Nyendo – Masaka, Uganda</p>
+  <p class="subtitle">Prayer Requests Report</p>
+  <p class="print-date">Printed on: <span id="printDate"></span></p>
+  <hr>
+</div>
+<!-- Back to Dashboard button -->
+<a href="dashboard.html" class="back-btn">⬅ Back to Dashboard</a>
+<button class="print-btn" onclick="printTable()">🖨️ Print</button>
+<h2>KFGC Prayer Requests</h2>
+
+<table id="table">
+  <thead></thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGuLzNgt_GNPRh2250O8HPD88sO0Y-MJV_vhcQ9zszjVTousiEL8RlT2zwje6Yx2jvkw/exec";
+
+// Fetch prayer requests
+fetch(`${SCRIPT_URL}?admin=KFGC_ADMIN_2025`)
+  .then(res => res.json())
+  .then(data => {
+    const table = document.getElementById("table");
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+
+    if (!data.length) {
+      tbody.innerHTML = "<tr><td colspan='100%'>No prayer requests yet.</td></tr>";
+      return;
+    }
+
+    // Table header
+    thead.innerHTML = "<tr>" +
+      Object.keys(data[0]).map(h => `<th>${h}</th>`).join("") +
+      "</tr>";
+
+    // Table rows
+    tbody.innerHTML = data.map(row => {
+      return "<tr>" + Object.values(row).map(v => `<td>${v || ""}</td>`).join("") + "</tr>";
+    }).join("");
+  })
+  .catch(err => {
+    console.error("Failed to fetch prayer requests:", err);
+    const tbody = document.querySelector("#table tbody");
+    tbody.innerHTML = "<tr><td colspan='100%'>Failed to load data. Please try again later.</td></tr>";
+  });
+function printTable() {
+  window.print();
+}
+document.getElementById("printDate").textContent =
+  new Date().toLocaleDateString();
+</script>
+
+</body>
+</html>

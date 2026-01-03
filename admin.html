@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — KFGC</title>
+  <link rel="stylesheet" href="admin.css" />
+  <script src="theme.js" defer></script>
+</head>
+<body class="auth-body">
+
+  <div class="auth-card">
+    <h2>KFGC Admin Login</h2>
+    <form id="adminLoginForm">
+      <input type="email" id="adminEmail" placeholder="Admin Email" required />
+      <input type="password" id="adminPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p id="loginError" class="error"></p>
+    </form>
+  </div>
+
+  <!-- Firebase & Auth -->
+  <script type="module" src="admin.js"></script>
+  
+  <style>
+  /* ===============================
+   GLOBAL DARK MODE
+   =============================== */
+
+.dark-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--navy, #08203a);
+}
+
+/* Base */
+body.dark {
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+/* Headers */
+body.dark header,
+body.dark .header {
+  background: #020617;
+}
+
+/* Cards / Sections */
+body.dark section,
+body.dark .card,
+body.dark .container {
+  background: #020617;
+}
+
+/* Text */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark p,
+body.dark span,
+body.dark label {
+  color: #e5e7eb;
+}
+
+/* Inputs */
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background: #020617;
+  color: #e5e7eb;
+  border-color: #334155;
+}
+
+/* Tables */
+body.dark table {
+  background: #020617;
+}
+
+body.dark th {
+  background: #08203a;
+  color: #fff;
+}
+
+body.dark td {
+  border-color: #334155;
+}
+
+/* Links */
+body.dark a {
+  color: #d9a441;
+}
+
+/* Footer */
+body.dark footer {
+  background: #020617;
+  color: #cbd5f5;
+}
+  </style>  
+</body>
+</html>
